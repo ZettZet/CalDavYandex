@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CalDavYandexLibrary.CalDavLib.Interfaces
 {
-    internal interface ISerializer
+    public interface ISerializer
     {
         /// <summary>
         /// Serialize Event to string

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CalDavYandexLibrary.CalDavLib.Models
 {
-    internal enum StatusOfEvent
+    public enum StatusOfEvent
     {
         Created,
         Updated,

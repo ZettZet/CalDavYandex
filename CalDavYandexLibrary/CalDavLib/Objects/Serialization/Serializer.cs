@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CalDavYandexLibrary.CalDavLib.Objects.Serialization
 {
-    internal class Serializer : ISerializer
+    public class Serializer : ISerializer
     {
         public string SerializeEventToString(IEvent targetEvent)
         {

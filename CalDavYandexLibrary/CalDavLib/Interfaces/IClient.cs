@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CalDavYandexLibrary.CalDavLib.Interfaces
 {
-    internal interface IClient
+    public interface IClient
     {
         /// <summary>
         /// Get the username to authenticate with.

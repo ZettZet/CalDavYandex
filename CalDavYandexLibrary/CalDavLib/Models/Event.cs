@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CalDavYandexLibrary.CalDavLib.Models
 {
-    internal class Event : IEvent
+    public class Event : IEvent
     {
         public Event()
         {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Examples
 {
-    internal class ExampleDeleteEvent
+    public class ExampleDeleteEvent
     {
         public static void Main()
         {

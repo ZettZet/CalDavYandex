@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Examples
 {
-    internal class ExampleGetCalendarByUrl
+    public class ExampleGetCalendarByUrl
     {
         public static void Main()
         {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CalDavYandexLibrary.CalDavLib.Objects
 {
-    internal class SaveStatus
+    public class SaveStatus
     {
         /// <summary>
         /// Get message about request.

@@ -13,7 +13,7 @@ using System.Xml.Linq;
 
 namespace CalDavYandexLibrary.CalDavLib.Objects
 {
-    internal class Client : IClient
+    public class Client : IClient
     {
         private HttpClient httpClient = new();
         private Serializer serializer = new();

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CalDavYandexLibrary.CalDavLib.Models
 {
-    internal class Calendar : ICalendar
+    public class Calendar : ICalendar
     {
         public string Uid { get; set; }
 

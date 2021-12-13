@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CalDavYandexLibrary.CalDavLib.Interfaces
 {
-    internal interface IDeserializer
+    public interface IDeserializer
     {
         /// <summary>
         /// Deserialize calendar from string

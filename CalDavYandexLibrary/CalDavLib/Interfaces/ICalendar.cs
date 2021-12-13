@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CalDavYandexLibrary.CalDavLib.Interfaces
 {
-    internal interface ICalendar
+    public interface ICalendar
     {
         /// <summary>
         /// Get the uid of the calendar.

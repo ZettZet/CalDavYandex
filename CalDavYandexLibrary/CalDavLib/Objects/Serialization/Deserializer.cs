@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 namespace CalDavYandexLibrary.CalDavLib.Objects.Serialization
 {
-    internal class Deserializer : IDeserializer
+    public class Deserializer : IDeserializer
     {
         public ICalendar DeserializeCalendar(string source)
         {

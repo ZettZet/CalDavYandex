@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Examples
 {
-    internal class ExampleCreateEvent
+    public class ExampleCreateEvent
     {
 
         public static void Main()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CalDavYandexLibrary.CalDavLib.Interfaces
 {
-    internal interface IEvent
+    public interface IEvent
     {
         /// <summary>
         /// Get the uid of the event.
