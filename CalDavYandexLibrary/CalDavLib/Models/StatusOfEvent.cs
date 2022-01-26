@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CalDavYandexLibrary.CalDavLib.Models
+namespace CalDavYandexLibrary.CalDav.Models
 {
     public enum StatusOfEvent
     {
         Created,
         Updated,
         Deleted,
-        Complete
+        Complete,
+        CompliteDeleted
     }
 }

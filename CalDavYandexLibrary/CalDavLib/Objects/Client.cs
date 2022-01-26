@@ -1,22 +1,22 @@
-﻿using CalDavYandexLibrary.CalDavLib.Interfaces;
-using CalDavYandexLibrary.CalDavLib.Models;
-using CalDavYandexLibrary.CalDavLib.Objects.Serialization;
+﻿using CalDavYandexLibrary.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using CalDavYandexLibrary.CalDav.Models;
+using CalDavYandexLibrary.CalDav.Objects.Serialization;
 
-namespace CalDavYandexLibrary.CalDavLib.Objects
+namespace CalDavYandexLibrary.CalDav.Objects
 {
     public class Client : IClient
     {
-        private HttpClient httpClient = new();
+        private HttpClient httpClient = new ();
         private Serializer serializer = new();
+
         private Deserializer deserializer = new();
 
         public Client(Uri targetUri, string login, string password)
@@ -44,7 +44,7 @@ namespace CalDavYandexLibrary.CalDavLib.Objects
 
             return 200 <= (int)responce?.StatusCode && (int)responce?.StatusCode <= 299;
         }
-
+     
         public async Task<IEnumerable<ICalendar>> GetCalendarsAsync()
         {
             var request = new HttpRequestMessage();
@@ -62,8 +62,8 @@ namespace CalDavYandexLibrary.CalDavLib.Objects
             {
                 var data = await result.Content.ReadAsByteArrayAsync();
 
-                var encoding = result.Content.Headers.ContentType?.CharSet is null ?
-                    Encoding.UTF8 :
+                var encoding = result.Content.Headers.ContentType?.CharSet is null ? 
+                    Encoding.UTF8 : 
                     Encoding.GetEncoding(result.Content.Headers.ContentType?.CharSet);
 
                 var dataAsString = encoding.GetString(data);
@@ -98,6 +98,45 @@ namespace CalDavYandexLibrary.CalDavLib.Objects
             }
         }
 
+        public async Task<IList<SaveStatus>> SaveChangesAsync(ICalendar calendar)
+        {
+            var results = new List<SaveStatus>();
+
+            if (calendar.LocalChanges)
+            {
+                foreach(var item in calendar.Events)
+                {
+                    switch (item.Status)
+                    {
+                        case StatusOfEvent.Created:
+                        case StatusOfEvent.Updated:
+                            results.Add(await SaveEventToServerAsync(item, GetEventUri(calendar, item)));
+                            item.Status = StatusOfEvent.Complete;
+                            break;
+                        case StatusOfEvent.Deleted:
+                            results.Add(await DeleteEventFromServerAsync(item, GetEventUri(calendar, item)));
+                            item.Status = StatusOfEvent.CompliteDeleted;
+                            break;
+
+                    }
+                }
+
+                calendar.LocalChanges = false;
+            }
+
+            calendar.Events = calendar.Events.Where(x => !x.Status.Equals(StatusOfEvent.CompliteDeleted)).ToList();
+
+            return results;
+        }
+
+        #region additional methods
+        void SetAuthorization(string username, string password)
+        {
+            var value = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{username}:{password}"));
+
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", value);
+        }
+
         public async Task<ICalendar> GetCalendarWithUriAsync(string uri)
         {
             var request = new HttpRequestMessage();
@@ -118,48 +157,12 @@ namespace CalDavYandexLibrary.CalDavLib.Objects
             return calendar;
         }
 
-        public async Task<IList<SaveStatus>> SaveChangesAsync(ICalendar calendar)
-        {
-            var results = new List<SaveStatus>();
-
-            if (calendar.LocalChanges)
-            {
-                foreach (var item in calendar.Events)
-                {
-                    switch (item.Status)
-                    {
-                        case StatusOfEvent.Created:
-                        case StatusOfEvent.Updated:
-                            results.Add(await SaveEventToServerAsync(item, GetEventUri(calendar, item)));
-                            item.Status = StatusOfEvent.Complete;
-                            break;
-                        case StatusOfEvent.Deleted:
-                            results.Add(await DeleteEventFromServerAsync(item, GetEventUri(calendar, item)));
-                            item.Status = StatusOfEvent.Complete;
-                            break;
-
-                    }
-                }
-
-                calendar.LocalChanges = false;
-            }
-
-            return results;
-        }
-
-        #region additional methods
-        void SetAuthorization(string username, string password)
-        {
-            var value = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{username}:{password}"));
-
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", value);
-        }
         string ParseResource(XElement element)
         {
             var uri = element
                 .Elements()
                 .FirstOrDefault(x => x.Name.LocalName.Equals("href", StringComparison.OrdinalIgnoreCase))?.Value;
-
+            
             return uri;
         }
 
@@ -178,7 +181,7 @@ namespace CalDavYandexLibrary.CalDavLib.Objects
 
                 return new SaveStatus(result.StatusCode.ToString(), (int)result.StatusCode, targetEvent);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return new SaveStatus(ex.Message, 500, targetEvent);
             }

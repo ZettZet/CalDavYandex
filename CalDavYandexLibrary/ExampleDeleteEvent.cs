@@ -1,4 +1,4 @@
-﻿using CalDavYandexLibrary.CalDavLib.Objects;
+﻿using CalDavYandexLibrary.CalDav.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;

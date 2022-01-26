@@ -1,11 +1,12 @@
-﻿using CalDavYandexLibrary.CalDavLib.Interfaces;
+﻿using CalDavYandexLibrary.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CalDavYandexLibrary.CalDav.Interfaces;
 
-namespace CalDavYandexLibrary.CalDavLib.Objects.Serialization
+namespace CalDavYandexLibrary.CalDav.Objects.Serialization
 {
     public class Serializer : ISerializer
     {
@@ -13,10 +14,10 @@ namespace CalDavYandexLibrary.CalDavLib.Objects.Serialization
         {
             var result = new StringBuilder("BEGIN:VCALENDAR\r\nBEGIN:VEVENT\r\n");
 
-            result.Append($"DTEND:{GetTimeInString(targetEvent.End - new TimeSpan(3, 0, 0))}\r\n");
-            result.Append($"DTSTART:{GetTimeInString(targetEvent.Start - new TimeSpan(3, 0, 0))}\r\n");
-            result.Append($"CREATED:{GetTimeInString(targetEvent.Created - new TimeSpan(3, 0, 0))}\r\n");
-            result.Append($"LAST-MODIFIED:{GetTimeInString(targetEvent.LastModified)}\r\n");
+            result.Append($"DTEND:{GetTimeInString(targetEvent.End.ToUniversalTime())}\r\n");
+            result.Append($"DTSTART:{GetTimeInString(targetEvent.Start.ToUniversalTime())}\r\n");
+            result.Append($"CREATED:{GetTimeInString(targetEvent.Created.ToUniversalTime())}\r\n");
+            result.Append($"LAST-MODIFIED:{GetTimeInString(targetEvent.LastModified.ToUniversalTime())}\r\n");
             result.Append($"SEQUENCE:0\r\n");
             result.Append($"SUMMARY:{targetEvent.Summary}\r\n");
             result.Append($"UID:{targetEvent.Uid}\r\n");
@@ -29,7 +30,7 @@ namespace CalDavYandexLibrary.CalDavLib.Objects.Serialization
         string GetTimeInString(DateTime dt)
         {
             string month = dt.Month.ToString();
-            if (dt.Month < 10)
+            if(dt.Month < 10)
             {
                 month = "0" + month;
             }

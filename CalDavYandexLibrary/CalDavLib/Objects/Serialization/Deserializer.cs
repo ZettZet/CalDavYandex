@@ -1,13 +1,14 @@
-﻿using CalDavYandexLibrary.CalDavLib.Interfaces;
-using CalDavYandexLibrary.CalDavLib.Models;
+﻿using CalDavYandexLibrary.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using CalDavYandexLibrary.CalDav.Interfaces;
+using CalDavYandexLibrary.CalDav.Models;
 
-namespace CalDavYandexLibrary.CalDavLib.Objects.Serialization
+namespace CalDavYandexLibrary.CalDav.Objects.Serialization
 {
     public class Deserializer : IDeserializer
     {
@@ -24,6 +25,7 @@ namespace CalDavYandexLibrary.CalDavLib.Objects.Serialization
                     .First()
                     .Elements()
                     .ToArray();
+
 
                 calendar.Uid = elements
                     .Where(x => x.ToString().Contains("<href", StringComparison.OrdinalIgnoreCase))
@@ -51,11 +53,11 @@ namespace CalDavYandexLibrary.CalDavLib.Objects.Serialization
                     .Where(x => x.ToString().Contains("<getctag", StringComparison.OrdinalIgnoreCase))
                     .FirstOrDefault()?.Value ?? "";
 
-                if (document.Root.Elements().Count() > 1)
+                if(document.Root.Elements().Count() > 1)
                 {
                     var data = document.Root.Elements().Skip(1);
-
-                    foreach (var resp in data)
+                    
+                    foreach(var resp in data)
                     {
                         var eventAsString = resp.Elements()
                             .ToArray()[1]
@@ -69,13 +71,15 @@ namespace CalDavYandexLibrary.CalDavLib.Objects.Serialization
 
                         calendar.Events.Add(DeserializeEvent(eventAsString));
                     }
-
+                    
                 }
 
                 return calendar;
             }
-            catch
+            catch(Exception ex)
             {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 return null;
             }
         }
@@ -85,6 +89,7 @@ namespace CalDavYandexLibrary.CalDavLib.Objects.Serialization
             var items = source
                 .Split("\r\n", StringSplitOptions.RemoveEmptyEntries)
                 .SkipWhile(x => !x.Equals("BEGIN:VEVENT"))
+                .Select(x=> x.Replace(";TZID=Europe/Moscow", ""))
                 .ToArray();
 
             IEvent targetEvent = new Event();

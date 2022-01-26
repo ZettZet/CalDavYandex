@@ -1,11 +1,14 @@
-﻿using CalDavYandexLibrary.CalDavLib.Interfaces;
+﻿using CalDavYandexLibrary.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using CalDavYandexLibrary.CalDav.Objects;
+using CalDavYandexLibrary.CalDav.Objects.Serialization;
 
-namespace CalDavYandexLibrary.CalDavLib.Models
+namespace CalDavYandexLibrary.CalDav.Models
 {
     public class Calendar : ICalendar
     {
@@ -59,9 +62,9 @@ namespace CalDavYandexLibrary.CalDavLib.Models
 
         public void UpdateEvent(IEvent calendarEvent, string summary = null, DateTime start = default, DateTime end = default, string location = null)
         {
-            if (Events.Where(x => x.Equals(calendarEvent)).Count() != 0)
+            if (Events.Where(x => x.Equals(calendarEvent as Event)).Count() != 0)
             {
-                var items = Events.Where(x => x.Equals(calendarEvent));
+                var items = Events.Where(x => x.Equals(calendarEvent as Event));
 
                 foreach (var item in items)
                 {
@@ -91,11 +94,11 @@ namespace CalDavYandexLibrary.CalDavLib.Models
 
         public void DeleteEvent(IEvent calendarEvent)
         {
-            if (Events.Where(x => x.Equals(calendarEvent)).Count() != 0)
+            if(Events.Where(x => x.Equals(calendarEvent)).Count() != 0)
             {
                 var items = Events.Where(x => x.Equals(calendarEvent));
 
-                foreach (var item in items)
+                foreach(var item in items)
                 {
                     item.Status = StatusOfEvent.Deleted;
                 }

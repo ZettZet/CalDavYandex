@@ -1,11 +1,7 @@
-﻿using CalDavYandexLibrary.CalDavLib.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CalDavYandexLibrary.CalDav.Models;
 
-namespace CalDavYandexLibrary.CalDavLib.Interfaces
+namespace CalDavYandexLibrary.Interfaces
 {
     public interface IEvent
     {

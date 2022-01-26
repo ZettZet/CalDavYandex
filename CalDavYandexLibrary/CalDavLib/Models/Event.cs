@@ -1,11 +1,11 @@
-﻿using CalDavYandexLibrary.CalDavLib.Interfaces;
+﻿using CalDavYandexLibrary.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CalDavYandexLibrary.CalDavLib.Models
+namespace CalDavYandexLibrary.CalDav.Models
 {
     public class Event : IEvent
     {
@@ -26,15 +26,15 @@ namespace CalDavYandexLibrary.CalDavLib.Models
 
         public string Location { get; set; }
         public string Summary { get; set; }
-        public StatusOfEvent Status { get; set; }
+        public StatusOfEvent Status {get;set;}
 
         public override bool Equals(object obj)
         {
-            if (!(obj is Event))
+            if(!(obj is Event))
             {
                 return false;
             }
-            if ((obj as Event) is null)
+            if((obj as Event) is null)
             {
                 return false;
             }

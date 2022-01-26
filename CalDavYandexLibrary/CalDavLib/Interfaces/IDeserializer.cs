@@ -1,10 +1,11 @@
-﻿using System;
+﻿using CalDavYandexLibrary.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CalDavYandexLibrary.CalDavLib.Interfaces
+namespace CalDavYandexLibrary.CalDav.Interfaces
 {
     public interface IDeserializer
     {
