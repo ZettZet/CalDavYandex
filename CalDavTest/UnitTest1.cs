@@ -8,9 +8,9 @@ namespace CalDavTest
     [TestClass]
     public class UnitTest1
     {
-        static string login = "devehher@yandex.ru"; //your login for calendar
-        static string pass = "jptyvznqpamfpetn"; //your password for calendar
-        static Uri uri = new Uri("https://caldav.yandex.ru/calendars/devehher@yandex.ru/");
+        static string login = ""; //your login for calendar
+        static string pass = ""; //your password for calendar
+        static Uri uri = new Uri("url to caldav server");
 
         static Client cli = new Client(uri, login, pass);
 
